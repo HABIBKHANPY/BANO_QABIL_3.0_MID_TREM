@@ -1,12 +1,10 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-# Define the scope and initialize the Google Sheets client
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 creds = ServiceAccountCredentials.from_json_keyfile_name('path/to/your/credentials.json', scope)
 client = gspread.authorize(creds)
 
-# Load recipes from a Google Sheet
 def load_recipes(sheet_name):
     sheet = client.open(sheet_name).sheet1
     recipes = {}
@@ -27,13 +25,10 @@ def suggest_recipes(recipes, available_ingredients):
 def main():
     print("Welcome to the Recipe Finder!")
 
-    # Load recipes from Google Sheets
-    recipes = load_recipes('Your Google Sheet Name')  # Replace with your Google Sheet name
+    recipes = load_recipes('Recipe spreadsheet')
 
-    # Get user input
     available_ingredients = input("Enter the ingredients you have, separated by commas: ").strip().lower().split(", ")
 
-    # Suggest recipes
     suggested_recipes = suggest_recipes(recipes, available_ingredients)
 
     if suggested_recipes:
