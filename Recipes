@@ -1,4 +1,4 @@
-Recipe	Ingredients
+Name	Ingredients
 Pancakes	flour, milk, egg, butter
 Omelette	egg, milk, cheese, salt, pepper
 Salad	lettuce, tomato, cucumber, olive oil
@@ -7,4 +7,4 @@ Grilled Cheese	bread, cheese, butter
 Fruit Smoothie	banana, milk, honey, berries
 
 
-url:https://docs.google.com/spreadsheets/d/1pEtRyCFK1ziCNpoLu7bskz15V2w9IKthSb0acUvGq0g/edit?usp=sharing
+url:https://api.sheety.co/956b4793baba2022781857e25b24a923/recipes/sheet1
