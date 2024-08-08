@@ -1,19 +1,25 @@
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+import requests
 
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name('path/to/your/credentials.json', scope)
-client = gspread.authorize(creds)
+SHEETY_ENDPOINT = "https://api.sheety.co/956b4793baba2022781857e25b24a923/recipes/sheet1"
 
-def load_recipes(sheet_name):
-    sheet = client.open(sheet_name).sheet1
-    recipes = {}
-    data = sheet.get_all_records()
-    for row in data:
-        recipe_name = row['Recipe']
-        ingredients = row['Ingredients'].split(', ')
-        recipes[recipe_name] = ingredients
-    return recipes
+def load_recipes():
+    try:
+        response = requests.get(url=SHEETY_ENDPOINT)
+        response.raise_for_status()
+        data = response.json()
+        
+        recipes_data = data['Recipes']
+        
+        recipes = {}
+        for item in recipes_data:
+            recipe_name = item['Recipe']
+            ingredients = item['Ingredients'].split(', ')
+            recipes[recipe_name] = ingredients
+        
+        return recipes
+    except requests.RequestException as e:
+        print(f"An error occurred: {e}")
+        return {}
 
 def suggest_recipes(recipes, available_ingredients):
     suggested_recipes = []
@@ -25,7 +31,11 @@ def suggest_recipes(recipes, available_ingredients):
 def main():
     print("Welcome to the Recipe Finder!")
 
-    recipes = load_recipes('Recipe spreadsheet')
+    recipes = load_recipes()
+
+    if not recipes:
+        print("No recipes found or an error occurred.")
+        return
 
     available_ingredients = input("Enter the ingredients you have, separated by commas: ").strip().lower().split(", ")
 
